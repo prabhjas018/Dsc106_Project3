@@ -1,0 +1,168 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f4f4f4;
+  color: #222;
+}
+
+main {
+  max-width: 1250px;
+  margin: auto;
+  padding: 2rem;
+}
+
+h1 {
+  margin-bottom: 0.25rem;
+  font-size: 2.4rem;
+}
+
+.subtitle {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+#controls {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+  background: white;
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.08);
+  margin: 1.5rem 0;
+}
+
+label {
+  font-weight: 600;
+}
+
+input,
+select,
+button {
+  font: inherit;
+}
+
+#yearLabel {
+  display: inline-block;
+  min-width: 55px;
+  font-weight: 700;
+  margin-left: 0.5rem;
+}
+
+button {
+  border: none;
+  background: #222;
+  color: white;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #444;
+}
+
+#dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) 330px;
+  gap: 1rem;
+}
+
+#map {
+  position: relative;
+  height: 650px;
+  background: #111;
+  overflow: hidden;
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.12);
+}
+
+.tile {
+  position: absolute;
+  image-rendering: auto;
+}
+
+#map svg {
+  position: absolute;
+  inset: 0;
+}
+
+.fire-dot {
+  fill: #ff4d00;
+  stroke: white;
+  stroke-width: 0.8;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+#infoPanel {
+  background: white;
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.1);
+}
+
+#panelYear {
+  font-size: 2rem;
+  margin-top: 0;
+}
+
+#panelStats strong,
+#panelDate strong {
+  font-weight: 800;
+}
+
+.chart-section {
+  margin-top: 2rem;
+}
+
+#barChart {
+  width: 100%;
+  height: auto;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.08);
+}
+
+.bar {
+  cursor: pointer;
+}
+
+.axis-label {
+  font-size: 0.85rem;
+  fill: #555;
+}
+
+#tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: white;
+  color: #222;
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.18);
+  opacity: 0;
+  font-size: 0.9rem;
+  max-width: 240px;
+  z-index: 999;
+}
+
+#writeup {
+  background: white;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.08);
+}
+
+@media (max-width: 900px) {
+  #dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  #map {
+    height: 520px;
+  }
+}

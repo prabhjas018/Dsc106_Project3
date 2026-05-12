@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>California Wildfires from Space</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main>
+    <header>
+      <h1>California Wildfires from Space</h1>
+      <p class="subtitle">
+        Explore California wildfire seasons from 2000–2024 using NASA MODIS satellite imagery
+        and FIRMS active-fire detections.
+      </p>
+    </header>
+
+    <section id="controls">
+      <label>
+        Year:
+        <input id="yearSlider" type="range" min="0" max="24" value="20" />
+        <span id="yearLabel">2020</span>
+      </label>
+
+      <label>
+        MODIS Layer:
+        <select id="layerSelect">
+          <option value="MODIS_Terra_CorrectedReflectance_TrueColor">Terra True Color</option>
+          <option value="MODIS_Aqua_CorrectedReflectance_TrueColor">Aqua True Color</option>
+          <option value="MODIS_Terra_CorrectedReflectance_Bands721">Terra False Color</option>
+          <option value="MODIS_Aqua_CorrectedReflectance_Bands721">Aqua False Color</option>
+        </select>
+      </label>
+
+      <button id="resetMap">Reset Map</button>
+    </section>
+
+    <section id="dashboard">
+      <div id="map"></div>
+
+      <aside id="infoPanel">
+        <h2 id="panelYear">2020</h2>
+        <p id="panelDate"></p>
+        <p id="panelStats"></p>
+        <p id="panelNote"></p>
+      </aside>
+    </section>
+
+    <section class="chart-section">
+      <h2>MODIS Active-Fire Detections by Year</h2>
+      <svg id="barChart" viewBox="0 0 1050 330" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;"></svg>
+    </section>
+
+    <section id="writeup">
+      <h2>Write-up</h2>
+
+      <h3>Motivation</h3>
+      <p>
+        This visualization explores how California wildfire seasons changed between 2000 and
+        2024 using NASA MODIS imagery and FIRMS active-fire detections.
+      </p>
+
+      <h3>Design Rationale</h3>
+      <p>
+        We use a satellite map because wildfires are spatial events. The year slider allows
+        users to explore time, while the MODIS layer selector lets users compare true color and
+        false color imagery. The bar chart summarizes annual active fire detections and lets
+        users quickly identify unusually severe years.
+      </p>
+    </section>
+  </main>
+
+  <div id="tooltip"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-tile@1"></script>
+  <script src="main.js"></script>
+</body>
+</html>
