@@ -70,14 +70,14 @@
         2024 using NASA MODIS satellite imagery and FIRMS active-fire detections. By combining
         real satellite imagery with temporal fire statistics, we aim to help viewers discover
         spatial and temporal patterns in where and when California's most destructive fire
-        seasons have occurred — patterns that are difficult to perceive from tabular data or
+        seasons have occurred, patterns that are difficult to perceive from tabular data or
         static charts alone.
       </p>
 
       <h3>Design Rationale</h3>
       <p>
         We chose a satellite map as the primary canvas because wildfires are fundamentally
-        spatial events — their geographic distribution across California's diverse terrain is
+        spatial events. Their geographic distribution across California's diverse terrain is
         central to understanding their impact. The selected year's fire activity is represented
         as a circle positioned at the mean centroid of all MODIS detections for that year,
         sized by total detection count using a square-root scale (which prevents the highest-detection
@@ -90,14 +90,14 @@
         For temporal exploration, the year slider allows users to scrub through 25 years of
         fire history and watch the satellite imagery update in real time. The MODIS layer
         selector lets users switch between true color (natural appearance) and false color
-        (Bands 7-2-1), which is particularly revealing for identifying burn scars — charred
+        (Bands 7-2-1), which is particularly revealing for identifying burn scars, where charred
         areas appear dark red-brown against healthy green vegetation. This combination of
         interactions enables discoveries that no static plot could support: for example,
         how the centroid of fire activity has shifted northward in recent severe years.
       </p>
       <p>
         The accompanying bar chart serves a dual purpose: it provides an annual overview of
-        detection intensity and acts as a navigation tool — clicking any bar jumps the map
+        detection intensity and acts as a navigation tool. Clicking any bar jumps the map
         directly to that year. Likewise, clicking any grey dot on the map jumps to that year,
         creating two synchronized pathways into the data. Hover tooltips on both the fire dots
         and bar chart provide on-demand detail without cluttering the primary view. The pulse
@@ -122,21 +122,21 @@
         as follows:
       </p>
       <p>
-        <strong>Edison</strong> led data acquisition and preprocessing — writing Python scripts
+        <strong>Edison</strong> led data acquisition and preprocessing, writing Python scripts
         to download and aggregate raw FIRMS MODIS detection CSVs from NASA's archive, computing
         per-year summary statistics (total detections, cumulative FRP, peak-day detection date
         and count, and mean centroid coordinates). Edison also implemented the D3 bar chart,
         including click-to-navigate interaction and year-synchronized bar highlighting.
       </p>
       <p>
-        <strong>Erdene</strong> handled MODIS tile integration via the NASA GIBS REST API —
+        <strong>Erdene</strong> handled MODIS tile integration via the NASA GIBS REST API, 
         identifying the correct WMTS tile coordinate ranges to cover California at zoom level 6,
         implementing layer switching between Terra and Aqua true and false color imagery, and
         managing tile error fallbacks between satellites when a layer was unavailable for a
         given date. Erdene also designed the overall page layout, HTML structure, and info panel.
       </p>
       <p>
-        <strong>Prabhjas</strong> built the fire dot visualization system — projecting centroid
+        <strong>Prabhjas</strong> built the fire dot visualization system, projecting centroid
         coordinates using D3's geoMercator, implementing zoom and pan behavior that keeps dots
         spatially aligned with the tile layer across all transform states, designing the radius
         and color scales, building the map legend, adding the multi-year historical dot layer
@@ -149,8 +149,8 @@
         GoogleMapsCompatible tiles in EPSG:3857) with D3's Mercator projection, which required
         careful calibration of tile x/y index ranges and projection scale parameters to ensure
         the fire centroid dot landed in a geographically accurate position relative to the
-        underlying satellite imagery. Processing and cleaning the raw FIRMS CSV data — which
-        contains millions of individual 1 km detection pixels per year — and maintaining
+        underlying satellite imagery. Processing and cleaning the raw FIRMS CSV data, which
+        contains millions of individual 1 km detection pixels per year, and maintaining
         zoom transform state consistency across the tile layer and SVG dot layer were the
         other significant technical challenges.
       </p>
