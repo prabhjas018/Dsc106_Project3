@@ -14,12 +14,19 @@ const tileLayer = map
   .attr("id", "tileLayer")
   .style("position", "absolute")
   .style("width", `${mapWidth}px`)
-  .style("height", `${mapHeight}px`);
+  .style("height", `${mapHeight}px`)
+  .style("transform-origin", "0 0");
 
 const svg = map
   .append("svg")
   .attr("width", mapWidth)
   .attr("height", mapHeight);
+
+svg.append("rect")
+  .attr("width", mapWidth)
+  .attr("height", mapHeight)
+  .style("fill", "none")
+  .style("pointer-events", "all")
 
 const fireLayer = svg.append("g").attr("id", "fireLayer");
 
@@ -35,12 +42,15 @@ const zoom = d3.zoom()
   .scaleExtent([1, 8])
   .on("zoom", event => {
     currentTransform = event.transform;
+
     tileLayer.style(
       "transform",
       `translate(${currentTransform.x}px, ${currentTransform.y}px) scale(${currentTransform.k})`
     );
 
-    fireLayer.attr("transform", currentTransform);
+    fireLayer.selectAll(".fire-dot")
+      .attr("cx", d => currentTransform.applyX(d.x))
+      .attr("cy", d => currentTransform.applyY(d.y));
   });
 
 svg.call(zoom);
@@ -105,24 +115,70 @@ function renderFireDots() {
 
   const [x, y] = projection([lon, lat]);
 
-  fireLayer
-    .append("circle")
-    .attr("class", "fire-dot")
-    .attr("cx", x)
-    .attr("cy", y)
-    .attr("r", Math.max(7, Math.sqrt(row.detections) / 25));
 
-  fireLayer
-    .append("text")
-    .attr("x", x + 12)
-    .attr("y", y - 12)
-    .attr("fill", "white")
-    .attr("font-weight", "700")
-    .attr("paint-order", "stroke")
-    .attr("stroke", "black")
-    .attr("stroke-width", 4)
-    .text(`${row.year} peak activity`);
+  const maxDetections = d3.max(wildfireData, d => d.detections);
+  const radiusScale = d3.scaleSqrt().domain([0, maxDetections]).range([2, 10]);
+  const baseRadius = radiusScale(maxDetections)
+
+  const maxfrp = d3.max(wildfireData, d => d.total_frp);
+  const colorScale = d3.scaleSequential(d3.interpolateYlOrRd).domain([0, maxfrp]);
+
+  const fireCircle = fireLayer
+    .append("circle")
+    .datum({ x: x, y: y, baseRadius: baseRadius})
+    .attr("class", "fire-dot")
+    .attr("cx", currentTransform.applyX(x))
+    .attr("cy", currentTransform.applyY(y))
+    .attr("r", baseRadius)
+    .style("fill", colorScale(row.total_frp))
+    .attr("stroke", "#ffffff")
+    .attr("stroke-width", 2)
+    .style("cursor", "pointer");
+    
+
+  fireCircle 
+    .on("mouseenter", (event) => {
+      d3.select(event.currentTarget)
+        .attr("stroke", "#000000")
+        .attr("stroke-width", 4);
+
+      tooltip.style("opacity", 1)
+        .html(`
+          <strong style="font-size: 1em; color: #d93101;">Peak Fire Event: ${row.year}</strong><br>
+          <strong>Coordinates:</strong> ${lat.toFixed(2)}&deg;N, ${Math.abs(lon).toFixed(2)}&deg;W<br>
+          <strong>Peak Date:</strong> ${row.peak_date}<br>
+          <strong>Intensity (FRP):</strong> ${d3.format(",.0f")(row.total_frp)} MW<br>
+          <strong>Peak Day Detections:</strong> ${d3.format(",")(row.peak_day_detections)}
+          `);
+    })
+    .on("mousemove", event => {
+      tooltip
+        .style("left", `${event.pageX + 14}px`)
+        .style("top", `${event.pageY + 14}px`);
+    })
+    .on("mouseleave", (event) => {
+      d3.select(event.currentTarget)
+        .attr("stroke", "#ffffff")
+        .attr("stroke-width", 2)
+      
+      tooltip.style("opacity", 0);
+    }) 
+
+  function pulse() {
+    fireCircle.transition()
+      .duration(1000)
+      .attr("r", baseRadius * 1.8)
+      .attr("opacity", 0.4)
+      .transition()
+      .duration(1000)
+      .attr("r", baseRadius)
+      .attr("opacity", 0.8)
+      .on('end', pulse);
+    }
+
+    pulse();
 }
+
 
 function renderInfoPanel() {
   const d = getCurrentRow();
@@ -219,7 +275,6 @@ function renderBarChart() {
     .attr("y", d => y(d.detections))
     .attr("width", x.bandwidth())
     .attr("height", d => innerHeight - y(d.detections))
-    .attr("fill", (d, i) => i === currentIndex ? "#d94801" : "#aaa")
     .on("mouseover", (event, d) => {
       tooltip
         .style("opacity", 1)
@@ -232,8 +287,8 @@ function renderBarChart() {
     })
     .on("mousemove", event => {
       tooltip
-        .style("left", `${event.clientX + 14}px`)
-        .style("top", `${event.clientY + 14}px`);
+        .style("left", `${event.pageX + 14}px`)
+        .style("top", `${event.pageY + 14}px`);
     })
     .on("mouseout", () => {
       tooltip.style("opacity", 0);
@@ -242,7 +297,10 @@ function renderBarChart() {
       currentIndex = wildfireData.findIndex(row => row.year === d.year);
       d3.select("#yearSlider").property("value", currentIndex);
       updateAll();
-    });
+    })
+    .transition()
+    .duration(200)
+    .attr("fill", (d, i) => i === currentIndex ? "#d94801" : "#aaa");
 }
 
 function updateAll() {
@@ -302,3 +360,5 @@ d3.csv("data/wildfire_years_summary.csv", d => ({
 
   updateAll();
 });
+
+

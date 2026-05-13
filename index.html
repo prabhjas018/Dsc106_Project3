@@ -54,22 +54,32 @@
     </section>
 
     <section id="writeup">
-      <h2>Write-up</h2>
+      <h3>Write-up</h3>
 
       <h3>Motivation</h3>
       <p>
         This visualization explores how California wildfire seasons changed between 2000 and
-        2024 using NASA MODIS imagery and FIRMS active-fire detections.
+        2024 using NASA MODIS imagery and FIRMS active-fire detections. Combining spatial 
+        satellite data with temporal statistics, our visualization aims to help users uncover trends in 
+        the occurrence, frequency, and severity of fires in California in the 21st Century. 
       </p>
 
       <h3>Design Rationale</h3>
       <p>
-        We use a satellite map because wildfires are spatial events. The year slider allows
-        users to explore time, while the MODIS layer selector lets users compare true color and
-        false color imagery. The bar chart summarizes annual active fire detections and lets
-        users quickly identify unusually severe years.
+        We designed a satellite map since our particular focus, wildfires, are spatial events. 
+        To encode visual severity of the fires, we applied a sequential color scale 
+        (yellow to red) based on the Fire Radiative Power (FRP). 
+        For temporal exploration, the year slider allows users to scan through time, while the 
+        MODIS layer selector lets users compare true color and false color imagery. The 
+        accompanying bar chart summarizes annual data and lets users quickly identify 
+        unusually severe years like 2020. 
+        To prevent clutter and overplotting, we implemented hover details over the bar chart 
+        and the fire dot, detailing the coordinates, date, and intensity metrics. The pulse
+        animation was added to catch the users' eye and invite interaction. 
       </p>
     </section>
+
+    
   </main>
 
   <div id="tooltip"></div>
