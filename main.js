@@ -220,12 +220,12 @@ function renderLegend(colorScale, radiusScale, maxFRP, maxDetections) {
 
   const legendSvg = d3.select("#legendContent")
     .append("svg")
-    .attr("width", 165)
-    .attr("height", 112);
+    .attr("width", 170)
+    .attr("height", 130);
 
-  // FRP color scale
+  // FRP color scale label
   legendSvg.append("text")
-    .attr("x", 0).attr("y", 12)
+    .attr("x", 0).attr("y", 13)
     .style("font-size", "0.72rem").style("fill", "#444")
     .style("font-family", "system-ui, sans-serif")
     .text("FRP intensity (selected year)");
@@ -239,33 +239,33 @@ function renderLegend(colorScale, radiusScale, maxFRP, maxDetections) {
   });
 
   legendSvg.append("rect")
-    .attr("x", 0).attr("y", 17).attr("width", 120).attr("height", 11)
+    .attr("x", 0).attr("y", 20).attr("width", 130).attr("height", 12)
     .attr("rx", 3).style("fill", "url(#frpGrad)");
 
-  legendSvg.append("text").attr("x", 0).attr("y", 42)
+  legendSvg.append("text").attr("x", 0).attr("y", 46)
     .style("font-size", "0.68rem").style("fill", "#666")
     .style("font-family", "system-ui, sans-serif").text("Low");
 
-  legendSvg.append("text").attr("x", 120).attr("y", 42)
+  legendSvg.append("text").attr("x", 130).attr("y", 46)
     .attr("text-anchor", "end")
     .style("font-size", "0.68rem").style("fill", "#666")
     .style("font-family", "system-ui, sans-serif").text("High");
 
   // Size note
   legendSvg.append("text")
-    .attr("x", 0).attr("y", 62)
+    .attr("x", 0).attr("y", 68)
     .style("font-size", "0.72rem").style("fill", "#444")
     .style("font-family", "system-ui, sans-serif")
     .text("Size = detection count");
 
   // Grey dot key
   legendSvg.append("circle")
-    .attr("cx", 8).attr("cy", 84).attr("r", 6)
+    .attr("cx", 8).attr("cy", 92).attr("r", 6)
     .style("fill", "#ccc").attr("stroke", "#fff").attr("stroke-width", 1)
     .style("opacity", 0.5);
 
   legendSvg.append("text")
-    .attr("x", 20).attr("y", 88)
+    .attr("x", 20).attr("y", 96)
     .style("font-size", "0.71rem").style("fill", "#555")
     .style("font-family", "system-ui, sans-serif")
     .text("Other years (click to select)");
